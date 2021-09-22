@@ -135,19 +135,15 @@ question("We want to calculate the **mean** value of the column brain_wt_kg, wha
 
 ###
 
-Now that you have seen how to calculate **mean** in R, use the interactive R piece below to calculate median, standard deviation (SD), and interquartile range (IQR) before answering the questions below:
-
-```{r exercise1, exercise = TRUE}
-
-```
+Now that you have seen how to calculate **mean** in R, use R Studio piece to calculate median, standard deviation (SD), and interquartile range (IQR) and answer the questions below:
 
 ```{R quiz1, echo = FALSE}
 quiz(caption = "Quiz on descriptive statistics",
   question("What is the median value of the column brain_wt_kg?",
-         answer ("0.28 kg"),
-         answer ("0.17 kg", correct = TRUE),
-         answer ("0.23 kg"),
-         answer ("17 kg"),
+         answer ("0.028 kg"),
+         answer ("0.017 kg", correct = TRUE),
+         answer ("0.023 kg"),
+         answer ("0.17 kg"),
          allow_retry = TRUE,
          random_answer_order = TRUE
 ),
