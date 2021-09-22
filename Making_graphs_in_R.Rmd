@@ -1,0 +1,436 @@
+---
+title: "Making graphs in R"
+author: "Dr Benjamin Chant"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: false
+runtime: shiny_prerendered
+description: >
+  Learn how to make basic graphs in R Studio.
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+tutorial_options(exercise.timelimit = 15)
+```
+
+```{r, echo=FALSE}
+# Define variable containing url
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+```
+
+![](Images/r logo.jpeg){width=20%}
+
+```{r, echo=FALSE}
+# Define variable containing url
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+```
+
+## Intended learning outcomes (ILO's)
+
+By the end of this session, you should be able to:
+
+* Calculate basic descriptive statistics in R:
+    + Mean
+    + Median
+    + Variance
+    + Standard deviation (SD)
+    + Quantiles
+    + Inter quartile range (IQR)
+    + Range
+
+* Make basic graphs in R including:
+    + Histograms
+    + Scatter diagrams
+    + Bar charts
+    + Box and whisper plot
+
+Some of this you will have covered previously - this session has been designed for you to practice these skills on new data sets in a different format. In addition, in this tutorial we will be building on some of the skills you learnt in Key Concepts regarding graph marking in R.
+
+## The data for today
+
+Today we will be using **two** data sets, one is looking at sleep patterns in mammals and the other is an experiment on plant growth.
+
+First, set your working directory to the R folder that you created on your desktop in the loading data into R tutorial. Check that your working directory has been set correctly using getwd().
+
+All set?
+
+Now, head to Blackboard and download the two .xlsx files called:
+
+* plant_growth.xlsx
+* mammals_sleep.xlsx
+
+**PLEASE NOTE** You will need to convert these to CSV files before we begin. Need a reminder? Head over to the loading data into R tutorial.
+
+To check that these files are stored in your working directory, we can use the following code:
+
+``` {R, echo = TRUE, eval = FALSE}
+list.files ("~/Desktop/R/") #insert path to your working directory
+```
+
+Before we start making our graphs, let's import the CSV files into R and assign them a name.
+
+``` {R, echo = TRUE, eval = F}
+mammals_sleep <- read.csv("~/Desktop/R/mammals_sleep.csv", header = TRUE, sep = ",")
+plant_growth <- read.csv("~/Desktop/R/plant_growth.csv", header = TRUE, sep = ",")
+```
+
+``` {R, echo = F, eval = T}
+mammals_sleep <- read.csv("mammals_sleep.csv", header = TRUE, sep = ",")
+plant_growth <- read.csv("plant_growth.csv", header = TRUE, sep = ",")
+```
+
+
+Let's quickly take a look at part of the data:
+
+``` {R, echo = TRUE, eval = TRUE}
+head(mammals_sleep)
+head(plant_growth)
+```
+
+The **head** function displays the first 6 rows of the data, allowing you to take quick glance at your data set.  
+The **tail** function does the same but for the bottom 6 rows of the data.
+
+If you wanted to display 10 rows of the data - instead of 6 - we could add the following bit of information:
+
+``` {R, echo = TRUE, eval = FALSE}
+head(mammals_sleep, n = 10)
+```
+
+### Additional information
+
+Links to information about datasets:
+
+Mammals:
+https://www.openintro.org/data/index.php?data=mammals  
+http://lib.stat.cmu.edu/datasets/sleep
+
+Plant growth:
+https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/PlantGrowth.html
+
+Before we begin making graphs in R, let's refresh our knowledge of calculating basic statistics in R.
+
+## Basic statistics in R
+
+Now that we have our data file loaded into R we can calculate some basic descriptive statistics to find out a little more about our data.
+
+For the following exercises, we will be focusing on the mammals_sleep file. Spend some time familiarising yourself with the data before we begin. Use the 'View' function below to do this.
+
+``` {R, echo = TRUE, eval = FALSE}
+View(mammals_sleep)
+```
+
+If you are not sure what the answers are to the questions below, have a go at running the code in R before answering. 
+
+###
+
+```{R mean, echo = FALSE}
+question("We want to calculate the **mean** value of the column brain_wt_kg, what is the correct way of doing this?",
+         answer ("mean(brain_weight_kg)"),
+         answer ("mean(mammals_sleep$brain_wt_kg)", correct = TRUE, message = "Well done, you have successfully calculated the mean value of mammals brain mass in kg!"),
+         allow_retry = TRUE)
+```
+
+###
+
+Now that you have seen how to calculate **mean** in R, use the interactive R piece below to calculate median, standard deviation (SD), and interquartile range (IQR) before answering the questions below:
+
+```{r exercise1, exercise = TRUE}
+
+```
+
+```{R quiz1, echo = FALSE}
+quiz(caption = "Quiz on descriptive statistics",
+  question("What is the median value of the column brain_wt_kg?",
+         answer ("0.28 kg"),
+         answer ("0.17 kg", correct = TRUE),
+         answer ("0.23 kg"),
+         answer ("17 kg"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE
+),
+question("What is the standard deviation of the column brain_wt_kg?",
+         answer ("0.6 kg"),
+         answer ("0.93 kg", correct = TRUE),
+         answer ("1.23 kg"),
+         answer ("930.28 kg"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE
+),
+question("What is the interquartile range of the column brain_wt_kg?",
+         answer ("0.6 kg"),
+         answer ("0.16 kg", correct = TRUE),
+         answer ("0.2 kg"),
+         answer ("0.61 kg"),
+         allow_retry = TRUE,
+         random_answer_order = TRUE
+))
+```
+
+Some other useful descriptive statistics to know how to calculate in R are variance, quantiles and the range. To calculate these, use the following code:
+
+``` {r, echo = TRUE, eval = FALSE}
+var(mammals_sleep$brain_wt_kg)
+quantile(mammals_sleep$brain_wt_kg)
+range(mammals_sleep$brain_wt_kg) #please note, range in R only gives you the max and min and does not calculate the difference.
+```
+
+### Want some more information on descriptive statistics?
+
+[LINK: Click here for an excellent article about the descriptive statistics covered in this tutorial and MORE!](https://techvidvan.com/tutorials/r-descriptive-statistics/?utm_campaign=News&utm_medium=Community&utm_source=DataCamp.com) 
+
+**Ready to make some graphs?**
+
+```{r, echo=FALSE}
+# Define variable containing url
+url_meme_ron <- "https://memegenerator.net/img/instances/72663088.jpg"
+```
+
+![](`r url_meme_ron`)
+
+## Making graphs in R
+
+In the following sections we are going to look at the following graphs:
+
+ * Scatter graph
+ * Histograms
+ * Bar charts
+ * Box and whisper plot
+    
+In this section of the tutorial, we will be extending your knowledge of building graphs in R that you covered in Key Concepts.
+
+## Scatter plot
+
+For the first graph we are going to continue working with the mammals_sleep data; we are going to look at the relationship between body weight (kg) vs. brain weight in (kg) in mammals. We are going to try and answer the question, does brain size increase as mammals get bigger? This is called **allometric scaling**.
+
+This data set contains body weight (kg) and brain weight (kg) data for 62 species of mammal!
+
+``` {R, echo = TRUE, eval = TRUE}
+plot(mammals_sleep$body_wt_kg, mammals_sleep$brain_wt_kg)
+```
+
+### What is the issue with this graph?
+
+Because there is a large range of values in this data set for both body_wt_kg and brain_wt_kg the data looks skewed to the left of the graph. What is the best way around this?
+
+```{R scatter, echo = FALSE}
+question("What is the best way around this issue?",
+         answer ("Delete the larger numbers in both datasets"),
+         answer ("Log the data", correct = TRUE, message = "Let's see how we do this in R"),
+         answer ("Don't use the data because there is clearly soemthing wrong with it"),
+         answer ("Only analyse data for animals between a certain body weight (g)"),
+         allow_retry = TRUE)
+```
+
+### How to solve this?
+
+To do logarithms in R, we can use the log() function. To do this for graphs, we use the same code as we did above but add log() in front of our data!
+
+``` {R, echo = TRUE, eval = TRUE}
+plot(log(mammals_sleep$body_wt_kg), log(mammals_sleep$brain_wt_kg), xlab = "Body weight (kg) on log scale", ylab = "Brain weight (kg) on log scale")
+```
+
+Say that we want to quantify this relationship between body weight (kg) and brain weight (kg). For this, we can use **linear regression**! To do this in R, we use the function lm().
+
+Let's see this in action:
+
+``` {R, echo = TRUE, eval = TRUE}
+plot(log(mammals_sleep$body_wt_kg), log(mammals_sleep$brain_wt_kg), xlab = "Body weight (kg) on log scale", ylab = "Brain weight (kg) on log scale")
+fit <- lm(log(brain_wt_kg) ~ log(body_wt_kg), data = mammals_sleep)
+#find out R2
+summary(fit)
+abline(fit, col = "red")
+```
+
+In the above piece of code we assign the lm to the object name 'fit': this makes it easier to call upon our lm again without having to write all of that code out multiple  times!
+
+When we call 'summary(fit)' this allows us to look at the summary of the linear regression. The piece of code abline(fit, col = "red") plots the linear regression onto our graph and allows us to look at this relationship between body weight (kg) and brain weight (kg).
+
+```{R scatter_one, echo = FALSE}
+question("What does this data show us about the relationship between body weight (kg) and brain weight (kg) in mammals?",
+         answer ("No relationship"),
+         answer ("As mammals body weight (kg) increases, so does brain weight (kg)", correct = TRUE),
+         answer ("As mammals body weight (kg) inreases, brains weight (kg) gets smaller"),
+         allow_retry = TRUE)
+```
+
+To find out more about scatter plots, try ?plot in R or have a look at some of the additional resources below:
+
+[Link: Quick-R guide to Scatterplots](https://www.statmethods.net/graphs/scatterplot.html)  
+[Link: STHDA guide to scatterplots](http://www.sthda.com/english/wiki/scatter-plots-r-base-graphs)
+
+## Histogram
+
+For the next part of this tutorial we are going to use the plant_growth data set that we loaded into our working directory earlier in this tutorial.
+
+I would advise that you look over the data again before we start:
+
+``` {R, echo = TRUE, eval = TRUE}
+head(plant_growth)
+```
+
+A histogram is a visual representation of the distribution of a dataset. The shape of a histogram allows us to easily see where a large amount of the data is situated and where there is very little data to be found.
+
+In the plant growth data set there are 3 groups, a control group, and 2 treatment groups. The dependent variable in this data collection was weight which is in column 1. If we wanted to explore the distrubition in weight among our control group, we could use a histogram.
+
+First, we need to **subset** out our control group using the following code:
+
+``` {R, echo = TRUE, eval = TRUE}
+#subsetting allows us to extract a certain part of the data that we are interested in. In this example, we are interested in a particular group within a study - the control group.
+control_group <- subset(plant_growth, plant_growth$group=="ctrl")
+#If we wanted to subset the 2nd treatment group, we could use plant_growth$group=="trt2" and so on.
+```
+
+Then we can plot the data using the hist function:
+
+``` {R, echo = TRUE, eval = TRUE}
+hist(control_group$weight, xlab = "Weight", main = "", col = "darkgrey")
+# leaving main = "" blank removes the title from out graph. Typically, graphs in papers do not include a title but include a figure legend to describe the figure.
+#col = "" is the colour of our histogram, this could be changed to col = "red" or col = "blue" for example.
+```
+
+To find out more about the histograms, try ?hist in R or have a look at some of the additional resources below:
+
+[Link: Datacamp guide to histograms](https://www.datacamp.com/community/tutorials/make-histogram-basic-r)  
+[Link: Data mentor guide to histograms](https://www.datamentor.io/r-programming/histogram/)
+
+## Bar chart
+
+A bar chart represents data in rectangular bars with length of the bar proportional to the value of the variable.
+
+For this part of the tutorial, we are going to look at bar charts of varying difficulty.
+
+### Bar chart 1
+
+For our first bar graph, we are going to look at the frequency of our categorical variable (plants) in each group.
+
+``` {R, echo = TRUE, eval = TRUE}
+#convert data to table
+table(plant_growth$group)
+#create a barplot
+barplot(table(plant_growth$group), xlab = "Group", ylab = "Frequency", names = c("Control", "Treatment 1", "Treatment 2"))
+```
+
+```{R bar_plot, echo = FALSE}
+question("What does this bar graph tell us about the frequency of plants in each experimental group",
+         answer ("That there are 10 plants in each group", correct = TRUE),
+         answer ("That there are 10 plants in the control group, but 9 in the others"),
+         answer ("That there is 1 plant in each group"),
+         allow_retry = TRUE)
+```
+
+### Bar chart 2
+
+For our second bar chart, we are going to look at the **mean** weight of each group in the plant growth experiment. To start with, I am going to show you a smart way of calculating all of the means and standard deviations (SD) of the various groups weights.
+
+``` {R, echo = TRUE, eval = TRUE}
+# the factor function shows you the different levels of a categorical variable (i.e. different groups). The square brackets with a ,2 in represent all rows and the whole second column - if we wanted to look at just the first row and second column we would use 'factor(plant_growth [1,2])'.
+factor_plant_growth <- factor(plant_growth [,2])
+factor_plant_growth
+# tapply is a useful function that allows us calculate multiple means or SDs at once - this is very useful and can save a lot of time!
+tapply (plant_growth$weight, factor_plant_growth, mean)
+tapply (plant_growth$weight, factor_plant_growth, sd)
+#tapply could also be applied to other descriptive statistics such as median.
+```
+
+``` {R, echo = TRUE, eval = TRUE}
+# the below piece of code is telling R to make a bar plot of the mean data from each group in our plant growth experiment. To do this we add the tapply code above into the plot:
+plant_growth_weight_barplot <- barplot (tapply(plant_growth$weight, factor_plant_growth, mean), xlab = "Group", ylab = "Weight", ylim = c(0,6), names = c("Control", "Treatment 1", "Treatment 2"))
+
+#OPTIONAL: this code is an extension of the above and applies some advanced customisation options to make the graph look pretty! Rather than explaining everything here, I have put a link below which shows you more about the customisation options with bar plots.
+plant_growth_weight_barplot <- barplot (tapply(plant_growth$weight, factor_plant_growth, mean), cex.axis = 1, ylim = c(0,6), col = c("grey","lightgrey", "darkgrey"), font = 2, font.lab = 2, cex = 1,  lwd = 3, axis.lty = 1, xlab = "Group", ylab = "Weight", cex.lab = 1, xpd = FALSE, names = c("Control", "Treatment 1", "Treatment 2"))
+#ylim = sets the y limits
+#cex = various sizes
+#lty = line type
+# col with 3 different colours adds a different colour to each experimental group
+
+# this code below wraps a box around the bar chart
+box (lwd = 3)
+```
+
+**I would encourage you all to copy and paste this code into your own R and have a go at changing some of the customisation options.**
+
+If you want to know more about customisation of R bar charts check out the following link:
+[Advanced R barplot customisation](https://www.r-graph-gallery.com/210-custom-barplot-layout.html)
+
+### Task: Making your own bar plot
+
+R has many inbuilt datasets, one of these datasets is called iris. More specifically, the iris dataset contains four measurements for 150 flowers representing three species of iris. Using this iris dataset, make a bar plot of the mean petal length among the 3 species.
+
+[Link to R documentation for iris data](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/iris)
+
+``` {R, echo = TRUE, eval = TRUE}
+# The datasets package needs to be loaded to access our data 
+# For a full list of these datasets, type library(help = "datasets")
+library(datasets)
+head(iris)
+```
+
+Have a go at making the bar graph then answer the following question:
+
+```{R bar_plot_2, echo = FALSE}
+question("Based on your obsersations, which species has the largest petal length (cm)?",
+         answer ("Setosa"),
+         answer ("Versicolor"),
+         answer ("Virginica", correct = TRUE),
+         allow_retry = TRUE)
+```
+
+### Task: The answers
+
+``` {R, echo = TRUE, eval = TRUE}
+factor_iris <- factor(iris [,5]) # all rows (blank before the comma; column 5 contains the species categorical data
+factor_iris
+tapply (iris$Petal.Length, factor_iris, mean)
+tapply (iris$Petal.Length, factor_iris, sd)
+```
+
+``` {R, echo = TRUE, eval = TRUE}
+# the below piece of code is telling R to make a bar plot of the mean data from each group in our plant growth experiment.
+iris_barplot <- barplot (tapply (iris$Petal.Length, factor_iris, mean), xlab = "Species", ylab = "Petal length (cm)", ylim = c(0,6))
+
+# OPTIONAL with customisation
+iris_barplot <- barplot (tapply (iris$Petal.Length, factor_iris, mean), cex.axis = 1, ylim = c(0,6), col = c("grey","lightgrey", "darkgrey"), font = 2, font.lab = 2, cex = 1,  lwd = 3, axis.lty = 1, xlab = "Species", ylab = "Petal length (cm)", cex.lab = 1, xpd = FALSE)
+
+box (lwd = 3)
+```
+
+## Box and Whisper plots
+
+The boxplot() function shows us how the distribution of a numerical variable (on the y axis) differs across the unique levels of a second variable (x). Boxplots visualise data distribution through their quartiles.
+
+We are going to use a boxplot() to compare the weight across our three groups in the plant growth data.
+
+``` {R, echo = TRUE, eval = TRUE}
+boxplot(weight ~ group, data = plant_growth, main = "", xlab = "Group", ylab = "Weight", col = c("darkred", "darkblue", "darkgreen"), names = c("Control", "Treatment 1", "Treatment 2"))
+```
+
+### Task: Making your own box and whisper plot
+
+Using the iris dataset again, I would like you to make a box and whisper plot of the sepal width among the various species in the dataset.
+
+Have a go at making the box and whisper plot then answer the following question:
+
+```{R box_plot, echo = FALSE}
+question("Based on your obsersations, which species has the largest sepal width (cm)?",
+         answer ("Setosa", correct = TRUE),
+         answer ("Versicolor"),
+         answer ("Virginica"),
+         allow_retry = TRUE)
+```
+
+### Task: The answers
+
+``` {R, echo = TRUE, eval = TRUE}
+boxplot(iris$Sepal.Width ~ iris$Species, data = iris, main = "", xlab = "Species", ylab = "Sepal width (cm)", col = c("darkred", "darkblue", "darkgreen"))
+```
+
+Additional resources:
+
+[LINK: Datacamp guide to boxplots in R](https://www.datacamp.com/community/tutorials/boxplot-in-r)
+
+## The end
+
+Well done everyone, that is the graph making tutorial complete!
